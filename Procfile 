@@ -1,0 +1,1 @@
+worker: curl -L -o Geyser-Standalone.jar https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone && java -Xmx1024M -jar Geyser-Standalone.jar
