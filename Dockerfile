@@ -2,12 +2,19 @@ FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
-COPY config.yml /app/config.yml
+# تثبيت الأدوات المطلوبة وأداة Playit.gg
+RUN apt-get update && apt-get install -y curl gnupg && \
+    curl -SsL https://playit-cloud.github.io/ppa/key.gpg | gpg --dearmor | tee /etc/apt/trusted.gpg.d/playit.gpg > /dev/null && \
+    echo "deb [signed-by=/etc/apt/trusted.gpg.d/playit.gpg] https://playit-cloud.github.io/ppa/data ./" | tee /etc/apt/sources.list.d/playit-cloud.list && \
+    apt-get update && apt-get install -y playit
 
-RUN apt-get update && apt-get install -y curl && \
-    curl -L -o Geyser-Standalone.jar https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone
+# تنزيل برنامج Geyser Standalone
+RUN curl -L -o Geyser-Standalone.jar https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/standalone
+
+COPY config.yml /app/config.yml
 
 EXPOSE 19132/udp
 EXPOSE 19132/tcp
 
-CMD ["java", "-Xmx1024M", "-jar", "Geyser-Standalone.jar"]
+# تشغيل Geyser و Playit معاً في الخلفية
+CMD playit on demand & java -Xmx1024M -jar Geyser-Standalone.jar
