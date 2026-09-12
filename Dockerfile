@@ -16,5 +16,5 @@ COPY config.yml /app/config.yml
 EXPOSE 19132/udp
 EXPOSE 19132/tcp
 
-# تشغيل Geyser و Playit معاً في الخلفية
-CMD playit on demand & java -Xmx1024M -jar Geyser-Standalone.jar
+# تشغيل Playit مع Geyser بالصيغة الصحيحة
+CMD playit run & java -Xmx1024M -jar Geyser-Standalone.jar
